@@ -1,0 +1,10 @@
+diff --git a/bin/build b/bin/build
+index 3ee2758521..624b3d6f52 100755
+--- a/bin/build
++++ b/bin/build
+@@ -19,4 +19,4 @@ fi
+ 
+ # Build mongo
+ cd $PROJECT_DIR
+-scons mongo --ssl CPPPATH=$OPENSSL_PATH/include LIBPATH=$OPENSSL_PATH/lib -j8 $BUILD_TYPE_SWITCH $MAC_SDK_SWITCH "${@:2}"
++scons mongo --disable-warnings-as-errors --ssl CPPPATH=$OPENSSL_PATH/include LIBPATH=$OPENSSL_PATH/lib -j8 $BUILD_TYPE_SWITCH $MAC_SDK_SWITCH "${@:2}"

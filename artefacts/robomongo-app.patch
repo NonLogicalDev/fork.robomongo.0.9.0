@@ -1,0 +1,259 @@
+diff --git a/cmake/FindOpenSSL.cmake b/cmake/FindOpenSSL.cmake
+index 397b4b97..60f69df9 100644
+--- a/cmake/FindOpenSSL.cmake
++++ b/cmake/FindOpenSSL.cmake
+@@ -1,13 +1,13 @@
+ ##################################################
+-# Find and Add OpenSSL shared (dynamic) library 
+-# 
++# Find and Add OpenSSL shared (dynamic) library
++#
+ # - This module defines the following variables:
+ #   OpenSSL_DIR
+ #   OPENSSL_VERSION
+ #
+ # - Imported shared(dynamic) libraries "ssl" and "crypto" are created.
+ #
+-# - It is assumed that OpenSSL has been built and path to OpenSSL build directory is 
++# - It is assumed that OpenSSL has been built and path to OpenSSL build directory is
+ #   added into system(environment) variable ROBOMONGO_CMAKE_PREFIX_PATH.
+ #
+ ##################################################
+@@ -99,13 +99,13 @@ endif ()
+ 
+ # Add imported ssl and crypto libraries
+ #-------------------------------------------
+-    
++
+ # Add imported target ssl (ssleay32)
+ add_library(ssl SHARED IMPORTED)
+ 
+ # Add imported target for crypto (libeay32)
+ add_library(crypto SHARED IMPORTED)
+-    
++
+ if(SYSTEM_WINDOWS)
+     set_target_properties(ssl PROPERTIES
+         INTERFACE_INCLUDE_DIRECTORIES   "${OpenSSL_DIR}/inc32"
+@@ -118,11 +118,11 @@ if(SYSTEM_WINDOWS)
+ elseif(SYSTEM_MACOSX)
+     set_target_properties(ssl PROPERTIES
+         INTERFACE_INCLUDE_DIRECTORIES   "${OpenSSL_DIR}/include"
+-        IMPORTED_LOCATION               "${OpenSSL_DIR}/libssl.dylib"
++        IMPORTED_LOCATION               "${OpenSSL_DIR}/lib/libssl.dylib"
+     )
+     set_target_properties(crypto PROPERTIES
+         INTERFACE_INCLUDE_DIRECTORIES   "${OpenSSL_DIR}/include"
+-        IMPORTED_LOCATION               "${OpenSSL_DIR}/libcrypto.dylib"
++        IMPORTED_LOCATION               "${OpenSSL_DIR}/lib/libcrypto.dylib"
+     )
+ elseif(SYSTEM_LINUX)
+     set_target_properties(ssl PROPERTIES
+diff --git a/cmake/RobomongoInstall.cmake b/cmake/RobomongoInstall.cmake
+index a40cf5ca..afbb500f 100644
+--- a/cmake/RobomongoInstall.cmake
++++ b/cmake/RobomongoInstall.cmake
+@@ -59,22 +59,22 @@ install(
+ # Install OpenSSL dynamic lib files
+ if(SYSTEM_WINDOWS)
+     install(
+-        FILES 
++        FILES
+         "${OpenSSL_DIR}/out32dll/ssleay32.dll"
+         "${OpenSSL_DIR}/out32dll/libeay32.dll"
+         DESTINATION ${bin_dir})
+ elseif(SYSTEM_MACOSX)
+     install(
+-        FILES 
+-        "${OpenSSL_DIR}/libssl.1.0.0.dylib"
+-        "${OpenSSL_DIR}/libcrypto.1.0.0.dylib"
++        FILES
++        "${OpenSSL_DIR}/lib/libssl.1.0.0.dylib"
++        "${OpenSSL_DIR}/lib/libcrypto.1.0.0.dylib"
+         DESTINATION ${lib_dir}/lib)
+ elseif(SYSTEM_LINUX)
+     install(
+-        FILES 
++        FILES
+         "${OpenSSL_DIR}/libssl.so.1.0.0"
+         "${OpenSSL_DIR}/libcrypto.so.1.0.0"
+-        DESTINATION ${lib_dir})         
++        DESTINATION ${lib_dir})
+ endif()
+ 
+ # Install binary
+diff --git a/src/third-party/qscintilla/sources/Qt4Qt5/Qsci/qsciscintilla.h b/src/third-party/qscintilla/sources/Qt4Qt5/Qsci/qsciscintilla.h
+index bae656b4..5731e121 100644
+--- a/src/third-party/qscintilla/sources/Qt4Qt5/Qsci/qsciscintilla.h
++++ b/src/third-party/qscintilla/sources/Qt4Qt5/Qsci/qsciscintilla.h
+@@ -2,9 +2,9 @@
+ // Scintilla.
+ //
+ // Copyright (c) 2014 Riverbank Computing Limited <info@riverbankcomputing.com>
+-// 
++//
+ // This file is part of QScintilla.
+-// 
++//
+ // This file may be used under the terms of the GNU General Public
+ // License versions 2.0 or 3.0 as published by the Free Software
+ // Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
+@@ -16,10 +16,10 @@
+ // certain additional rights. These rights are described in the Riverbank
+ // GPL Exception version 1.1, which can be found in the file
+ // GPL_EXCEPTION.txt in this package.
+-// 
++//
+ // If you are unsure which license is appropriate for your use, please
+ // contact the sales department at sales@riverbankcomputing.com.
+-// 
++//
+ // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ 
+@@ -27,9 +27,11 @@
+ #ifndef QSCISCINTILLA_H
+ #define QSCISCINTILLA_H
+ 
++/*
+ #ifdef __APPLE__
+ extern "C++" {
+ #endif
++*/
+ 
+ #include <qobject.h>
+ #include <qstringlist.h>
+@@ -718,7 +720,7 @@ public:
+     //!
+     //! If \a forward is true (the default) then the search is forward from the
+     //! starting position to the end of the text, otherwise it is backwards to
+-    //! the beginning of the text. 
++    //! the beginning of the text.
+     //!
+     //! If either \a line or \a index are negative (the default) then the
+     //! search begins from the current cursor position.  Otherwise the search
+@@ -793,7 +795,7 @@ public:
+     //! set to the index at which the selection begins within \a *lineFrom, and
+     //! \a *indexTo is set to the index at which the selection ends within
+     //! \a *lineTo.  If there is no selection, \a *lineFrom, \a *indexFrom,
+-    //! \a *lineTo and \a *indexTo are all set to -1. 
++    //! \a *lineTo and \a *indexTo are all set to -1.
+     //!
+     //! \sa setSelection()
+     void getSelection(int *lineFrom, int *indexFrom, int *lineTo,
+@@ -1860,7 +1862,7 @@ public slots:
+     //! combined into actions that are undone as a unit.  These sequences occur
+     //! between calls to beginUndoAction() and endUndoAction().  These
+     //! sequences can be nested and only the top level sequences are undone as
+-    //! units. 
++    //! units.
+     //!
+     //! \sa beginUndoAction(), endUndoAction(), isUndoAvailable()
+     virtual void undo();
+@@ -1910,7 +1912,7 @@ signals:
+     //! \a yes is true if text has been selected and false if text has been
+     //! deselected.  If \a yes is true then copy() can be used to copy the
+     //! selection to the clipboard.  If \a yes is false then copy() does
+-    //! nothing. 
++    //! nothing.
+     //!
+     //! \sa copy(), selectionChanged()
+     void copyAvailable(bool yes);
+@@ -2107,7 +2109,13 @@ private:
+     int ct_cursor;
+     QList<int> ct_shifts;
+     AutoCompletionUseSingle use_single;
++    /*
+     QPointer<QsciLexer> lex;
++    */
++    // LEXER
++    struct Lexer;
++    Lexer *lexerStruct;
++    // /LEXER
+     QsciCommandSet *stdCmds;
+     QsciDocument doc;
+     QColor nl_text_colour;
+@@ -2128,9 +2136,10 @@ private:
+     QsciScintilla(const QsciScintilla &);
+     QsciScintilla &operator=(const QsciScintilla &);
+ };
+-
++/*
+ #ifdef __APPLE__
+ }
+ #endif
++*/
+ 
+ #endif
+diff --git a/src/third-party/qscintilla/sources/Qt4Qt5/qsciscintilla.cpp b/src/third-party/qscintilla/sources/Qt4Qt5/qsciscintilla.cpp
+index 9e1cbf34..651c9c56 100644
+--- a/src/third-party/qscintilla/sources/Qt4Qt5/qsciscintilla.cpp
++++ b/src/third-party/qscintilla/sources/Qt4Qt5/qsciscintilla.cpp
+@@ -3,9 +3,9 @@
+ // behave in the same way.
+ //
+ // Copyright (c) 2014 Riverbank Computing Limited <info@riverbankcomputing.com>
+-// 
++//
+ // This file is part of QScintilla.
+-// 
++//
+ // This file may be used under the terms of the GNU General Public
+ // License versions 2.0 or 3.0 as published by the Free Software
+ // Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
+@@ -17,10 +17,10 @@
+ // certain additional rights. These rights are described in the Riverbank
+ // GPL Exception version 1.1, which can be found in the file
+ // GPL_EXCEPTION.txt in this package.
+-// 
++//
+ // If you are unsure which license is appropriate for your use, please
+ // contact the sales department at sales@riverbankcomputing.com.
+-// 
++//
+ // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ 
+@@ -45,6 +45,13 @@
+ #include "Qsci/qscistyle.h"
+ #include "Qsci/qscistyledtext.h"
+ 
++// LEXER
++struct QsciScintilla::Lexer
++{
++    QPointer<QsciLexer> object;
++};
++#define lex (lexerStruct->object)
++// /LEXER
+ 
+ // Make sure these match the values in Scintilla.h.  We don't #include that
+ // file because it just causes more clashes.
+@@ -71,6 +78,9 @@ QsciScintilla::QsciScintilla(QWidget *parent)
+       wchars(defaultWordChars), call_tips_position(CallTipsBelowText),
+       call_tips_style(CallTipsNoContext), maxCallTips(-1),
+       use_single(AcusNever), explicit_fillups(""), fillups_enabled(false)
++      // LEXER
++      , lexerStruct(new Lexer())
++      // /LEXER
+ {
+     connect(this,SIGNAL(SCN_MODIFYATTEMPTRO()),
+              SIGNAL(modificationAttempted()));
+@@ -150,6 +160,9 @@ QsciScintilla::~QsciScintilla()
+ 
+     doc.undisplay(this);
+     delete stdCmds;
++    // LEXER
++    delete lexerStruct;
++    // /LEXER
+ }
+ 
+ 
+@@ -1965,7 +1978,7 @@ void QsciScintilla::setSelection(int lineFrom, int indexFrom, int lineTo,
+ void QsciScintilla::setSelectionBackgroundColor(const QColor &col)
+ {
+     int alpha = col.alpha();
+-    
++
+     if (alpha == 255)
+         alpha = SC_ALPHA_NOALPHA;
+ 
